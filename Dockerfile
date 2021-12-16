@@ -1,4 +1,4 @@
-FROM coffeateam/coffea-dask:v0.7.11-fastjet-3.3.4.0rc9-g18b0c8c
+FROM coffeateam/coffea-dask:0.7.11-fastjet-3.3.4.0rc9-g18b0c8c
 
 USER root
 
