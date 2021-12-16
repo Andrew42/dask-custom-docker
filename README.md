@@ -95,3 +95,64 @@ client
 __IMPORTANT:__
 
 If client is not working try to open `http://$DASK_SCHEDULER_UI_IP:$DASK_SCHEDULER_UI_PORT/info/main/workers.html` and check a Dask Scheduler IP address there.
+
+## How to check logs
+
+Use command `kubectl get pods` to see which pods are available in deployment:
+
+```
+kubectl get pods                                               INT ✘ │ minikube ⎈ │ 12:31:05 
+NAME                                  READY   STATUS    RESTARTS      AGE
+dask-test-jupyter-6d476dc55-f445c     1/1     Running   2 (18h ago)   18h
+dask-test-scheduler-7bf8db777-n724b   1/1     Running   0             93m
+dask-test-worker-6cc5f84c47-2vkxd     1/1     Running   0             92m
+dask-test-worker-6cc5f84c47-ff29d     1/1     Running   0             93m
+dask-test-worker-6cc5f84c47-vswxf     1/1     Running   0             92m
+```
+e.g.
+
+```
+~ kubectl logs dask-test-worker-6cc5f84c47-2vkxd                     ✔ │ minikube ⎈ │ 12:28:40 
+distributed.nanny - INFO -         Start Nanny at: 'tcp://172.17.0.10:46011'
+distributed.worker - INFO -       Start worker at:    tcp://172.17.0.10:39093
+distributed.worker - INFO -          Listening to:    tcp://172.17.0.10:39093
+distributed.worker - INFO -          dashboard at:           172.17.0.10:8790
+distributed.worker - INFO - Waiting to connect to: tcp://dask-test-scheduler:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -               Threads:                          4
+distributed.worker - INFO -                Memory:                  11.70 GiB
+distributed.worker - INFO -       Local Directory: /dask-worker-space/worker-juplvzdj
+distributed.worker - INFO - -------------------------------------------------
+distributed.worker - INFO -         Registered to: tcp://dask-test-scheduler:8786
+distributed.worker - INFO - -------------------------------------------------
+distributed.core - INFO - Starting established connection
+distributed.nanny - INFO - Starting Nanny plugin upload-directory-workflows
+distributed.worker - INFO - Run out-of-band function 'get_info'
+distributed.worker - WARNING - Run Failed
+Function: get_info
+args:     ()
+kwargs:   {}
+Traceback (most recent call last):
+  File "/opt/conda/lib/python3.8/site-packages/distributed/worker.py", line 4595, in run
+    result = function(*args, **kwargs)
+  File "/tmp/ipykernel_147/3582326714.py", line 11, in get_info
+FileNotFoundError: [Errno 2] No such file or directory: 'dask-worker-space/workflows'
+distributed.nanny - INFO - Starting Nanny plugin upload-directory-workflows
+distributed.worker - INFO - Run out-of-band function 'get_info'
+distributed.nanny - INFO - Starting Nanny plugin upload-directory-examples
+distributed.worker - INFO - Run out-of-band function 'get_info'
+distributed.nanny - INFO - Starting Nanny plugin upload-directory-examples
+distributed.worker - INFO - Run out-of-band function 'get_info'
+distributed.nanny - INFO - Starting Nanny plugin upload-directory-example_upload_dir
+distributed.worker - INFO - Run out-of-band function 'get_info'
+distributed.nanny - INFO - Starting Nanny plugin upload-directory-example_upload_dir
+distributed.worker - INFO - Run out-of-band function 'get_info'
+distributed.nanny - INFO - Starting Nanny plugin upload-directory-example_upload_dir
+distributed.worker - INFO - Run out-of-band function 'get_info'
+distributed.nanny - INFO - Starting Nanny plugin upload-directory-tmp_test
+distributed.worker - INFO - Run out-of-band function 'get_info'
+distributed.nanny - INFO - Starting Nanny plugin upload-directory-tmp_test
+distributed.worker - INFO - Run out-of-band function 'get_info'
+distributed.nanny - INFO - Starting Nanny plugin upload-directory-tmp_test
+distributed.worker - INFO - Run out-of-band function 'get_info'
+```
