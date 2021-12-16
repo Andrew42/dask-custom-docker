@@ -76,13 +76,13 @@ and  Jupyter notebook adress:
 echo http://$JUPYTER_NOTEBOOK_IP:$JUPYTER_NOTEBOOK_PORT
 ```
 
-## Simple example to test correctness of deployment:
+## The simple example to test correctness of deployment:
 
-To check Dask Client connection:
+To check Dask Client connection in terminal check its IP address:
 ```
 echo tcp://$DASK_SCHEDULER:$DASK_SCHEDULER_PORT
 ```
-and try in Jyputernotebook using the code snippet:
+and try in Jupyter notebook available `http://$JUPYTER_NOTEBOOK_IP:$JUPYTER_NOTEBOOK_PORT` using next code snippet:
 
 ```
 from distributed import Client
@@ -92,4 +92,4 @@ client = Client('tcp://127.0.0.1:8080')
 client
 ```
 
-__If client is not working try to open http://$DASK_SCHEDULER_UI_IP:$DASK_SCHEDULER_UI_PORT/info/main/workers.html and check a Dask Scheduler IP address there.__
+__If client is not working try to open `http://$DASK_SCHEDULER_UI_IP:$DASK_SCHEDULER_UI_PORT/info/main/workers.html` and check a Dask Scheduler IP address there.
