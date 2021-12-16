@@ -4,7 +4,7 @@
 _(To be tested on dask/dask deployment)_
 
 ## How to build an image
-`
+
 (_instead of `oshadura` please select preferable Dockerhub username_)
 
 ```
@@ -44,16 +44,15 @@ Try in the browser Dask dashboard:
 ```
 echo http://$DASK_SCHEDULER_UI_IP:$DASK_SCHEDULER_UI_PORT
 ```
-
 and  Jupyter notebook adress:
 ```
 echo http://$JUPYTER_NOTEBOOK_IP:$JUPYTER_NOTEBOOK_PORT
-  
 ```
 
 To check Dask Client connection:
-`echo tcp://$DASK_SCHEDULER:$DASK_SCHEDULER_PORT `
-
+```
+echo tcp://$DASK_SCHEDULER:$DASK_SCHEDULER_PORT
+```
 and try in Jyputernotebook using the code snippet:
 
 ```
