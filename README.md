@@ -1,9 +1,9 @@
 # Docker image dask-custom-docker (Coffea + patched Dask Distributed)
 
 
-_(To be tested on dask/dask deployment)_
+_(To be tested with dask/dask k8s deployment for coffea-casa AF project)_
 
-## How to build an image
+## How to build a Docker image
 
 (_instead of `oshadura` please select preferable Dockerhub username_)
 
@@ -12,7 +12,7 @@ sudo docker build -t oshadura/coffea-custom-docker:2021.12.15 .
 
 ```
 
-## How to push an image
+## How to push a Docker image
 
 (_instead of `oshadura` please select preferable Dockerhub username_)
 
@@ -20,7 +20,33 @@ sudo docker build -t oshadura/coffea-custom-docker:2021.12.15 .
 sudo docker push oshadura/coffea-custom-docker:2021.12.15
 ```
 
-# How to test it with dask/dask Helm charts on Minikube 
+## Helm charts: Kubernetes deployment of Dask scheduler and 3 Dask workers
+
+(see https://github.com/dask/helm-chart/tree/main/dask)
+
+Before to try to test images please adjust images to be used in `values.yaml` in this repository, particularly `scheduler.image` and `scheduler.tag`
+
+```
+scheduler:
+  name: scheduler  # Dask scheduler name.
+  enabled: true  # Enable/disable scheduler.
+  image:
+    repository: "oshadura/coffea-custom-docker"  # Container image repository.
+    tag: 2021.12.16  # Container image tag.
+ ....
+ ```
+ 
+ and `worker.image` and `worker.tag`
+ 
+ ```
+ worker:
+  name: worker  # Dask worker name.
+  image:
+    repository: "oshadura/coffea-custom-docker"  # Container image repository.
+    tag: 2021.12.16  # Container image tag.
+ ```
+ 
+## How to test it with dask/dask Helm charts on Minikube 
 
 ```
 helm repo add dask https://helm.dask.org/
@@ -50,6 +76,8 @@ and  Jupyter notebook adress:
 echo http://$JUPYTER_NOTEBOOK_IP:$JUPYTER_NOTEBOOK_PORT
 ```
 
+## Simple example to test correctness of deployment:
+
 To check Dask Client connection:
 ```
 echo tcp://$DASK_SCHEDULER:$DASK_SCHEDULER_PORT
@@ -63,3 +91,5 @@ client = Client('tcp://127.0.0.1:8080')
 
 client
 ```
+
+__If client is not working try to open http://$DASK_SCHEDULER_UI_IP:$DASK_SCHEDULER_UI_PORT/info/main/workers.html and check a Dask Scheduler IP address there.__
