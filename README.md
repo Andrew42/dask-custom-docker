@@ -92,4 +92,6 @@ client = Client('tcp://127.0.0.1:8080')
 client
 ```
 
-__If client is not working try to open `http://$DASK_SCHEDULER_UI_IP:$DASK_SCHEDULER_UI_PORT/info/main/workers.html` and check a Dask Scheduler IP address there.
+__IMPORTANT:__
+
+If client is not working try to open `http://$DASK_SCHEDULER_UI_IP:$DASK_SCHEDULER_UI_PORT/info/main/workers.html` and check a Dask Scheduler IP address there.
