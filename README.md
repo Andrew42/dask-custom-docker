@@ -39,6 +39,7 @@ kubectl port-forward --namespace default svc/dask-test-scheduler $DASK_SCHEDULER
 export JUPYTER_NOTEBOOK_IP="127.0.0.1"
 export JUPYTER_NOTEBOOK_PORT=8082
 kubectl port-forward --namespace default svc/dask-test-jupyter $JUPYTER_NOTEBOOK_PORT:80 &
+```
 
 Try in the browser Dask dashboard:
 ```
