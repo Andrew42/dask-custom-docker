@@ -128,31 +128,39 @@ distributed.worker - INFO - -------------------------------------------------
 distributed.core - INFO - Starting established connection
 distributed.nanny - INFO - Starting Nanny plugin upload-directory-workflows
 distributed.worker - INFO - Run out-of-band function 'get_info'
-distributed.worker - WARNING - Run Failed
-Function: get_info
-args:     ()
-kwargs:   {}
-Traceback (most recent call last):
-  File "/opt/conda/lib/python3.8/site-packages/distributed/worker.py", line 4595, in run
-    result = function(*args, **kwargs)
-  File "/tmp/ipykernel_147/3582326714.py", line 11, in get_info
-FileNotFoundError: [Errno 2] No such file or directory: 'dask-worker-space/workflows'
-distributed.nanny - INFO - Starting Nanny plugin upload-directory-workflows
-distributed.worker - INFO - Run out-of-band function 'get_info'
 distributed.nanny - INFO - Starting Nanny plugin upload-directory-examples
 distributed.worker - INFO - Run out-of-band function 'get_info'
 distributed.nanny - INFO - Starting Nanny plugin upload-directory-examples
 distributed.worker - INFO - Run out-of-band function 'get_info'
-distributed.nanny - INFO - Starting Nanny plugin upload-directory-example_upload_dir
-distributed.worker - INFO - Run out-of-band function 'get_info'
-distributed.nanny - INFO - Starting Nanny plugin upload-directory-example_upload_dir
-distributed.worker - INFO - Run out-of-band function 'get_info'
-distributed.nanny - INFO - Starting Nanny plugin upload-directory-example_upload_dir
-distributed.worker - INFO - Run out-of-band function 'get_info'
-distributed.nanny - INFO - Starting Nanny plugin upload-directory-tmp_test
-distributed.worker - INFO - Run out-of-band function 'get_info'
-distributed.nanny - INFO - Starting Nanny plugin upload-directory-tmp_test
-distributed.worker - INFO - Run out-of-band function 'get_info'
-distributed.nanny - INFO - Starting Nanny plugin upload-directory-tmp_test
-distributed.worker - INFO - Run out-of-band function 'get_info'
+```
+If you need to ssh to worker try `kubectl exec --stdin --tty dask-test-worker-6cc5f84c47-ff29d -- /bin/bash`:
+```
+kubectl exec --stdin --tty dask-test-worker-6cc5f84c47-ff29d -- /bin/bash
+(base) root@dask-test-worker-6cc5f84c47-ff29d:/# ls -la
+total 64
+drwxr-xr-x   1 root root 4096 Dec 16 09:58 .
+drwxr-xr-x   1 root root 4096 Dec 16 09:58 ..
+-rwxr-xr-x   1 root root    0 Dec 16 09:58 .dockerenv
+lrwxrwxrwx   1 root root    7 Oct  6 16:47 bin -> usr/bin
+drwxr-xr-x   2 root root 4096 Apr 15  2020 boot
+drwxr-xr-x   6 root root 4096 Dec 16 11:26 dask-worker-space
+drwxr-xr-x   5 root root  360 Dec 16 09:58 dev
+drwxr-xr-x   1 root root 4096 Dec 16 09:58 etc
+drwxr-xr-x   2 root root 4096 Apr 15  2020 home
+lrwxrwxrwx   1 root root    7 Oct  6 16:47 lib -> usr/lib
+lrwxrwxrwx   1 root root    9 Oct  6 16:47 lib32 -> usr/lib32
+lrwxrwxrwx   1 root root    9 Oct  6 16:47 lib64 -> usr/lib64
+lrwxrwxrwx   1 root root   10 Oct  6 16:47 libx32 -> usr/libx32
+drwxr-xr-x   2 root root 4096 Oct  6 16:47 media
+drwxr-xr-x   2 root root 4096 Oct  6 16:47 mnt
+drwxr-xr-x   1 root root 4096 Dec  1 20:40 opt
+dr-xr-xr-x 253 root root    0 Dec 16 09:58 proc
+drwx------   1 root root 4096 Dec  1 20:40 root
+drwxr-xr-x   1 root root 4096 Dec 16 09:58 run
+lrwxrwxrwx   1 root root    8 Oct  6 16:47 sbin -> usr/sbin
+drwxr-xr-x   2 root root 4096 Oct  6 16:47 srv
+dr-xr-xr-x  13 root root    0 Dec 16 09:57 sys
+drwxrwxrwt   1 root root 4096 Dec 16 09:52 tmp
+drwxr-xr-x   1 root root 4096 Oct  6 16:47 usr
+drwxr-xr-x   1 root root 4096 Oct  6 16:58 var
 ```
