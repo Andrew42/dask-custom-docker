@@ -1,5 +1,11 @@
 FROM coffeateam/coffea-dask:0.7.11-fastjet-3.3.4.0rc9-ga05a1f8
 
+USER root
+
+RUN apt-get update --yes && \
+    apt-get install --yes --no-install-recommends \
+    patch
+
 # FIXME: merge PRs open in distributed.git (oshadura)
 # Distributed: we need to install patched version of distributed version
 COPY distributed /opt/conda/lib/python3.8/site-packages/distributed
