@@ -6,9 +6,11 @@ scheduler:
   name: scheduler  # Dask scheduler name.
   enabled: true  # Enable/disable scheduler.
   image:
-    repository: "oshadura/coffea-custom-docker"  # Container image repository.
-    tag: 2021.12.16  # Container image tag.
-    pullPolicy: IfNotPresent  # Container image pull policy.
+    # repository: "awightma/coffea-custom-docker_no-patch"  # Container image repository.
+    # tag: 2022.01.14
+    repository: "awightma/coffea-custom-docker"  # Container image repository.
+    tag: 2021.12.17  # Container image tag.
+    pullPolicy: Always  # Container image pull policy.
     pullSecrets:  # Container image [pull secrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
     #  - name: regcred
   replicas: 1  # Number of schedulers (should always be 1).
@@ -18,8 +20,10 @@ scheduler:
   loadBalancerIP: null  # Some cloud providers allow you to specify the loadBalancerIP when using the `LoadBalancer` service type. If your cloud does not support it this option will be ignored.
   servicePort: 8786 # Scheduler service internal port.
   serviceAnnotations: {} # Scheduler service annotations.
-  extraArgs:
-    #- --dashboard-address:8787
+  extraArgs: []
+    # - --help
+    # - --nanny-contact-address:8001
+    # - --dashboard-address:8787
     # - scheduler-setup.py
   resources: {}  # Scheduler pod resources. See `values.yaml` for example values.
   #  limits:
@@ -64,14 +68,18 @@ webUI:
 
 worker:
   name: worker  # Dask worker name.
+  servicePort: 8001
+  serviceType: "ClusterIP"
   image:
-    repository: "oshadura/coffea-custom-docker"  # Container image repository.
-    tag: 2021.12.16  # Container image tag.
-    pullPolicy: IfNotPresent  # Container image pull policy.
+    # repository: "awightma/coffea-custom-docker_no-patch"  # Container image repository.
+    # tag: 2022.01.14
+    repository: "awightma/coffea-custom-docker"  # Container image repository.
+    tag: 2021.12.17  # Container image tag.
+    pullPolicy: Always  # Container image pull policy.
     dask_worker: "dask-worker"  # Dask worker command. E.g `dask-cuda-worker` for GPU worker.
     pullSecrets:  # Container image [pull secrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
     #  - name: regcred
-  replicas: 3  # Number of workers.
+  replicas: 1  # Number of workers.
   strategy:
     type: RollingUpdate  # Strategy used to replace old Pods with new ones.
   custom_scheduler_url: null # connect to already existing scheduler, deployed not by this chart.
@@ -85,13 +93,22 @@ worker:
   #    value: numba xarray -c conda-forge
   #  - name: EXTRA_PIP_PACKAGES
   #    value: s3fs dask-ml prometheus-client --upgrade
-  extraArgs: [] # Extra CLI arguments to be passed to the worker
+  extraArgs: # Extra CLI arguments to be passed to the worker
+    # - --host
+    # - tcp://172.17.0.10
+    - --nanny-contact-address
+    - tcp://dask-test-worker:8001
+    # - tcp://172.17.0.10
+    - --nanny-port
+    - "8001"
+    # - --help
     # - --preload
     # - worker-setup.py
-  resources: {}  # Worker pod resources. See `values.yaml` for example values.
-  #  limits:
+  # resources: {}  # Worker pod resources. See `values.yaml` for example values.
+  resources:
+    limits:
+      memory: 3G
   #    cpu: 1
-  #    memory: 3G
   #    nvidia.com/gpu: 1
   #  requests:
   #    cpu: 1
@@ -155,7 +172,7 @@ jupyter:
   #  - name: EXTRA_PIP_PACKAGES
   #    value: "s3fs dask-ml --upgrade"
   command: null  # Container command.
-  args:  # Container arguments.
+  args: [] # Container arguments.
   #  - "start.sh"
   #  - "jupyter"
   #  - "lab"
