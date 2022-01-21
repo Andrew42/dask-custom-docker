@@ -1,4 +1,4 @@
-# Docker image dask-custom-docker (Coffea + patched Dask Distributed)
+# Dask deployment in Kuberenetes using custom dask docker image with Coffea + patched Dask Distributed
 
 
 _(To be tested with dask/dask k8s deployment for coffea-casa AF project)_
@@ -45,6 +45,16 @@ scheduler:
     repository: "oshadura/coffea-custom-docker"  # Container image repository.
     tag: 2021.12.16  # Container image tag.
  ```
+ 
+## Use custom dask Helm charts
+
+For debugging purposes we can install dask/dask from local charts (https://github.com/oshadura/helm-chart):
+
+```
+cd dask-charts
+helm install dask-test ./dask  -f dask/values-andrew.yaml
+
+```
  
 ## How to test it with dask/dask Helm charts on Minikube 
 
