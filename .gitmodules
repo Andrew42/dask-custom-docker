@@ -1,0 +1,3 @@
+[submodule "dask-charts"]
+	path = dask-charts
+	url = https://github.com/oshadura/helm-chart.git
