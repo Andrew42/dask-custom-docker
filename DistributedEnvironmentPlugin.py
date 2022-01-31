@@ -8,16 +8,16 @@ from dask.utils import tmpfile
 
 logger = logging.getLogger(__name__)
 
-class PackagePlugin(NannyPlugin):
-    """A NannyPlugin to upload a local file to workers.
+class DistributedEnvironmentPlugin(NannyPlugin):
+    """A NannyPlugin to upload a local pip installable package to workers.
     Parameters
     ----------
     path: str
-        A path to the directory to upload
+        A path to the pip installable directory to upload
     Examples
     --------
-    >>> from distributed.diagnostics.plugin import UploadDirectory
-    >>> client.register_worker_plugin(UploadDirectory("/path/to/directory"), nanny=True)  # doctest: +SKIP
+    >>> from distributed.diagnostics.plugin import DistributedEnvironmentPlugin
+    >>> client.register_worker_plugin(DistributedEnvironmentPlugin("/path/to/directory"), nanny=True)  # doctest: +SKIP
     """
 
     def __init__(
@@ -28,6 +28,7 @@ class PackagePlugin(NannyPlugin):
         update_path=False,
         skip_words=(".git", ".github", ".pytest_cache", "tests", "docs"),
         skip=(lambda fn: os.path.splitext(fn)[1] == ".pyc",),
+        extra_inputs=[],
     ):
         """
         Initialize the plugin by reading in the data from the given file.
@@ -39,6 +40,7 @@ class PackagePlugin(NannyPlugin):
         if pip_options is None:
             pip_options = []
         self.pip_options = pip_options
+        self.extra_inputs = [os.path.split(x)[-1] for x in extra_inputs]
 
         self.name = "upload-directory-" + self.package
 
@@ -57,6 +59,9 @@ class PackagePlugin(NannyPlugin):
                             os.path.join(root, file), os.path.join(path, "..")
                         )
                         z.write(filename, archive_name)
+                for fpath in extra_inputs:
+                    fname = os.path.split(fpath)[-1]
+                    z.write(fpath,fname)
 
             with open(fn, "rb") as f:
                 self.data = f.read()
@@ -98,6 +103,13 @@ class PackagePlugin(NannyPlugin):
             logger.error("Pip install failed with '%s'",stderr.decode().strip())
             return
 
+        for fname in self.extra_inputs:
+            if nanny.worker_dir is None:
+                raise RuntimeError
+            src = os.path.join(nanny.local_directory,fname)
+            dst = os.path.join(nanny.worker_dir,fname)
+            os.rename(src,dst)
+        
         # Cleanup the zip file
         logger.info("Cleaning up temporary directory: %s",fn)
         os.remove(fn)
