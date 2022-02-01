@@ -24,7 +24,9 @@ docker build -t oshadura/coffea-custom-docker-notebook:2021.02.01 -f notebook.Do
 
 ```
 sudo docker push oshadura/coffea-custom-docker:2021.02.01
-sudo docker build -t oshadura/coffea-custom-docker-notebook:2021.02.01 -f notebook.Dockerfile .
+```
+```
+sudo docker push oshadura/coffea-custom-docker-notebook:2021.02.01
 ```
 
 ## Helm charts: Kubernetes deployment of Dask scheduler and 3 Dask workers
