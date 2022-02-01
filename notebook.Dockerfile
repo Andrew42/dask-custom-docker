@@ -16,6 +16,19 @@ RUN cd /opt/conda/lib/python3.8/site-packages/distributed && \
     patch -p2 < 0004-Add-possibility-to-setup-external_adress-for-schedul.patch && \
     patch -p2 < 0005-Add-patch-from-John-Thiltges.patch
     
-COPY prepare.sh /usr/bin/prepare.sh
+ADD prepare-env.sh /usr/local/bin/
+RUN chmod ugo+x /usr/local/bin/prepare-env.sh
 
-ENTRYPOINT ["tini", "--", "/usr/bin/prepare.sh"]
+# Copy local files as late as possible to avoid cache busting
+COPY start.sh start-notebook.sh /usr/local/bin/
+
+# Switch back to cms-jovyan to avoid accidental container runs as root
+USER ${NB_UID}
+WORKDIR $HOME
+#ENTRYPOINT ["tini", "-g", "--"]
+ENTRYPOINT ["tini", "-g", "--", "/usr/local/bin/prepare-env.sh"]
+
+# Extra packages to be installed (apt, pip, conda) and commands to be executed
+# Use bash login shell for entrypoint in order
+# to automatically source user's .bashrc
+CMD ["start-notebook.sh"]
