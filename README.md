@@ -1,23 +1,30 @@
 # Dask deployment in Kuberenetes using custom dask docker image with Coffea + patched Dask Distributed
-
-
 _(To be tested with dask/dask k8s deployment for coffea-casa AF project)_
 
-## How to build a Docker image
+
+## How to build a Scheduler/Worker Docker image
 
 (_instead of `oshadura` please select preferable Dockerhub username_)
 
 ```
-sudo docker build -t oshadura/coffea-custom-docker:2021.12.15 .
-
+sudo docker push oshadura/coffea-custom-docker:2021.02.01 .
 ```
 
-## How to push a Docker image
+## How to build a Notebook Docker image
 
 (_instead of `oshadura` please select preferable Dockerhub username_)
 
 ```
-sudo docker push oshadura/coffea-custom-docker:2021.12.15
+docker build -t oshadura/coffea-custom-docker-notebook:2021.02.01 -f notebook.Dockerfile .
+```
+
+## How to push a Docker images
+
+(_instead of `oshadura` please select preferable Dockerhub username_)
+
+```
+sudo docker push oshadura/coffea-custom-docker:2021.02.01
+sudo docker build -t oshadura/coffea-custom-docker-notebook:2021.02.01 -f notebook.Dockerfile .
 ```
 
 ## Helm charts: Kubernetes deployment of Dask scheduler and 3 Dask workers
